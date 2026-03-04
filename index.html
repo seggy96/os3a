@@ -1,0 +1,685 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Informační systémy - Lekce 1 a 2</title>
+    <style>
+        :root {
+            --primary: #2c3e50;
+            --secondary: #34495e;
+            --accent: #e74c3c;
+            --accent-hover: #c0392b;
+            --text-light: #ecf0f1;
+            --text-dark: #2c3e50;
+            --activity-bg: #f39c12;
+            --theory-bg: #3498db;
+            --recap-bg: #9b59b6;
+            --story-bg: #c0392b;
+        }
+
+        html, body {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            background-color: var(--primary);
+            color: var(--text-light);
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            overflow: hidden;
+            touch-action: pan-y;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        #controls {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1000;
+            display: flex;
+            gap: 10px;
+        }
+
+        button {
+            background-color: var(--accent);
+            color: white;
+            border: none;
+            padding: 15px 25px;
+            font-size: 1.2rem;
+            cursor: pointer;
+            border-radius: 5px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+            transition: background 0.3s;
+        }
+
+        button:hover {
+            background-color: var(--accent-hover);
+        }
+
+        #progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 5px;
+            background-color: var(--accent);
+            width: 0%;
+            z-index: 1000;
+            transition: width 0.3s ease;
+        }
+
+        #slide-counter {
+            position: fixed;
+            bottom: 25px;
+            left: 20px;
+            font-size: 1.2rem;
+            color: rgba(255,255,255,0.5);
+            z-index: 1000;
+        }
+
+        #presentation {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+
+        .slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.4s ease-in-out, visibility 0.4s;
+            display: flex;
+            flex-direction: column;
+            padding: 40px 8%;
+            padding-bottom: 100px;
+            overflow-y: auto;
+            overflow-x: hidden;
+        }
+
+        .slide.active {
+            opacity: 1;
+            visibility: visible;
+            z-index: 10;
+        }
+
+        h1 {
+            font-size: 3.5rem;
+            margin-bottom: 20px;
+            border-bottom: 3px solid var(--accent);
+            padding-bottom: 10px;
+            display: inline-block;
+        }
+
+        h2 {
+            font-size: 2.2rem;
+            margin-top: 30px;
+            margin-bottom: 15px;
+            color: #bdc3c7;
+        }
+
+        p, li {
+            font-size: 1.4rem;
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+
+        ul, ol {
+            margin-left: 40px;
+            margin-bottom: 20px;
+        }
+
+        code {
+            display: block;
+            background: rgba(0,0,0,0.3);
+            padding: 15px;
+            border-radius: 5px;
+            font-family: monospace;
+            word-wrap: break-word;
+            font-size: 1.2rem;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 1rem;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            align-self: flex-start;
+        }
+
+        .badge.theory { background-color: var(--theory-bg); color: white; }
+        .badge.activity { background-color: var(--activity-bg); color: var(--text-dark); }
+        .badge.intro { background-color: #27ae60; color: white; }
+        .badge.recap { background-color: var(--recap-bg); color: white; }
+        .badge.story { background-color: var(--story-bg); color: white; }
+
+        .content-box, .recap-box, .activity-box {
+            padding: 30px;
+            border-radius: 10px;
+            margin-top: 20px;
+        }
+
+        .content-box {
+            background: rgba(255,255,255,0.05);
+            border-left: 5px solid var(--accent);
+        }
+        
+        .recap-box {
+            background: rgba(155, 89, 182, 0.1);
+            border-left: 5px solid var(--recap-bg);
+        }
+
+        .activity-box {
+            background: rgba(243, 156, 18, 0.1);
+            border-left: 5px solid var(--activity-bg);
+        }
+
+        .story-box {
+            background: rgba(192, 57, 43, 0.15);
+            border-left: 5px solid var(--story-bg);
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            font-style: italic;
+        }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            margin-top: 20px;
+        }
+
+        .topics-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .topic-item {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            border: 2px solid var(--accent);
+            font-weight: bold;
+            font-size: 1.2rem;
+            color: white;
+        }
+
+        .title-slide {
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+        .title-slide h1 {
+            border: none;
+            font-size: 5rem;
+            margin-bottom: 0;
+            color: var(--accent);
+        }
+        .title-slide .badge {
+            align-self: center;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        th, td {
+            padding: 15px;
+            text-align: center;
+            border: 1px solid rgba(255,255,255,0.2);
+            font-size: 1.2rem;
+        }
+        th {
+            background: rgba(0,0,0,0.3);
+            color: var(--accent);
+        }
+
+        @media (max-width: 768px) {
+            h1 { font-size: 2.2rem; }
+            h2 { font-size: 1.6rem; }
+            p, li { font-size: 1.1rem; }
+            ul, ol { margin-left: 20px; }
+            
+            .title-slide h1 { font-size: 3rem; }
+            .title-slide h2 { font-size: 1.5rem; }
+
+            .grid-2 { grid-template-columns: 1fr; gap: 20px; }
+            .topics-grid { grid-template-columns: repeat(2, 1fr); }
+
+            .slide { padding: 30px 5%; padding-bottom: 90px; }
+            .content-box, .activity-box, .recap-box, .story-box { padding: 20px; }
+
+            #controls {
+                bottom: 15px;
+                right: 15px;
+                width: calc(100% - 30px);
+                justify-content: space-between;
+            }
+
+            #slide-counter { display: none; }
+
+            button {
+                padding: 12px 20px;
+                font-size: 1rem;
+                flex: 1;
+                margin: 0 5px;
+            }
+            
+            table { display: block; overflow-x: auto; }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="progress-bar"></div>
+    <div id="slide-counter">1 / X</div>
+
+    <div id="controls">
+        <button id="btn-prev" aria-label="Předchozí snímek">&#8592; Zpět</button>
+        <button id="btn-next" aria-label="Další snímek">Další &#8594;</button>
+    </div>
+
+    <div id="presentation">
+
+        <!-- SLIDE 1: ÚVOD -->
+        <div class="slide active title-slide">
+            <span class="badge intro">Lekce 1 a 2</span>
+            <h1>Informační systémy</h1>
+            <h2>Od teorie po audit systémů</h2>
+            <p>Použijte šipky, tlačítka nebo swipujte do stran.</p>
+        </div>
+
+        <!-- ======================= LEKCE 1 ======================= -->
+        
+        <!-- SLIDE 2: SYSTÉMY OBECNĚ -->
+        <div class="slide">
+            <span class="badge theory">Teorie</span>
+            <h1>Co je to "Systém"?</h1>
+            <div class="grid-2">
+                <div>
+                    <h2>Definice</h2>
+                    <ul>
+                        <li>Systém je účelově uspořádaná množina prvků a vazeb mezi nimi.</li>
+                        <li>Je to souhrn souvisejících prvků, sdružený do nějakého smysluplného celku.</li>
+                    </ul>
+                </div>
+                <div class="content-box">
+                    <h2>Jak funguje?</h2>
+                    <ul>
+                        <li>Skládá se z jednotlivých dílů (komponent).</li>
+                        <li>Tyto díly jsou vzájemně propojeny.</li>
+                        <li>Umožňují tok <strong>informací, materiálů nebo energie</strong>.</li>
+                        <li>Používá se pro popis objektů, které se ovlivňují a lze pro ně vytvořit model.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 3: TYPY SYSTÉMŮ OTÁZKA -->
+        <div class="slide">
+            <span class="badge theory">Teorie / Otázka</span>
+            <h1>Typy systémů</h1>
+            <div class="grid-2">
+                <div>
+                    <h2>Základní rozdělení</h2>
+                    <ul>
+                        <li style="margin-bottom: 20px;"><strong>Uzavřený × Otevřený</strong> <br><span style="font-size: 1.1rem; color: #bdc3c7;">(Podle toho, zda si s okolím vyměňuje látky, energii nebo informace)</span></li>
+                        <li><strong>Statický × Dynamický</strong> <br><span style="font-size: 1.1rem; color: #bdc3c7;">(Podle toho, zda se mění v čase a reaguje na podněty)</span></li>
+                    </ul>
+                    <div class="activity-box" style="margin-top: 30px;">
+                        <h3 style="color: white;">Dokážete vymyslet příklady?</h3>
+                        <p style="font-size: 1.2rem; color: white;">Co by mohl být statický systém? A co dynamický a otevřený?</p>
+                    </div>
+                </div>
+                <div class="recap-box">
+                    <h2>Příklady systémů obecně</h2>
+                    <ul style="font-size: 1.3rem;">
+                        <li>Vědní, klasifikační systém</li>
+                        <li>Binární, hexadecimální systém</li>
+                        <li>Dopravní, dálniční systém</li>
+                        <li>Filosofický systém</li>
+                        <li>Operační systém</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 4: TYPY SYSTÉMŮ ŘEŠENÍ -->
+        <div class="slide">
+            <span class="badge recap">Řešení</span>
+            <h1>Typy systémů - Příklady</h1>
+            <div class="content-box">
+                <div class="grid-2">
+                    <div>
+                        <h2 style="margin-top: 0;">Uzavřený × Otevřený</h2>
+                        <ul>
+                            <li style="margin-bottom: 15px;"><strong>Otevřený:</strong> Neustále komunikuje s okolím, potřebuje vstupy. <br><span style="font-size: 1.1rem; color: #bdc3c7;"><em>Příklady:</em> Město, škola, živý organismus, e-shop.</span></li>
+                            <li><strong>Uzavřený:</strong> S okolím nekomunikuje, vystačí si sám. <br><span style="font-size: 1.1rem; color: #bdc3c7;"><em>Příklady:</em> Dokonale uzavřená termoska, zapečetěné terárium.</span></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h2 style="margin-top: 0;">Statický × Dynamický</h2>
+                        <ul>
+                            <li style="margin-bottom: 15px;"><strong>Statický:</strong> Nemění se, jeho stav je v čase konstantní. <br><span style="font-size: 1.1rem; color: #bdc3c7;"><em>Příklady:</em> Mostní konstrukce, krystalová mřížka kamene, tištěná mapa.</span></li>
+                            <li><strong>Dynamický:</strong> Mění se v čase, reaguje a vyvíjí se. <br><span style="font-size: 1.1rem; color: #bdc3c7;"><em>Příklady:</em> Ekonomika státu, počasí, navigace v mobilu (Waze), školní informační systém.</span></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 5: INFORMAČNÍ SYSTÉMY -->
+        <div class="slide">
+            <span class="badge theory">Teorie</span>
+            <h1>Informační systém (IS)</h1>
+            <div class="content-box">
+                <h2>Definice a účel</h2>
+                <ul>
+                    <li>IS je soubor technologických prostředků a metod.</li>
+                    <li>Zabezpečuje <strong>sběr, přenos, zpracování a uchování dat</strong>.</li>
+                    <li>Účelem je příprava, tvorba, prezentace a správa informací pro potřeby uživatelů.</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- SLIDE 6: HÁDANKA IS BEZ POČÍTAČŮ -->
+        <div class="slide">
+            <span class="badge activity">Otázka do pléna</span>
+            <h1>Informační systém bez počítačů?</h1>
+            <div class="activity-box" style="text-align: center; padding: 60px 30px;">
+                <h2 style="margin-bottom: 20px; color: white;">Zkuste si představit svět před rokem 1950.</h2>
+                <p style="color: white;">Existovaly tehdy informační systémy? Pokud ano, jak lidé vyhledávali a zpracovávali data bez serverů a harddisků?</p>
+                <p style="font-weight: bold; font-size: 1.8rem; margin-top: 30px; color: white;">Příklady?</p>
+            </div>
+        </div>
+
+        <!-- SLIDE 7: HÁDANKA ŘEŠENÍ -->
+        <div class="slide">
+            <span class="badge recap">Řešení</span>
+            <h1>IS před érou počítačů</h1>
+            <div class="grid-2">
+                <div class="content-box">
+                    <h2>Telefonní seznam</h2>
+                    <ul>
+                        <li>Uspořádaná množina kontaktů na telefonní účastníky sítě.</li>
+                        <li>Logické uspořádání (abecední).</li>
+                        <li><strong>Problém:</strong> Velmi špatně se v něm vyhledává "obráceně" (podle čísla).</li>
+                    </ul>
+                </div>
+                <div class="content-box">
+                    <h2>Kartotéka</h2>
+                    <ul>
+                        <li>Nejčastěji v knihovnách nebo ve zdravotnictví.</li>
+                        <li>Fyzicky uspořádaný soubor papírových lístků.</li>
+                        <li>Umožňuje systematické řazení a rychlé dohledání.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 8: PILÍŘE IS -->
+        <div class="slide">
+            <span class="badge theory">Struktura</span>
+            <h1>Z čeho se skládá každý IS?</h1>
+            <p>Abychom něco nazvali informačním systémem, musí to mít <strong>5 pilířů</strong>:</p>
+            <div class="content-box">
+                <div class="grid-2">
+                    <div>
+                        <ul>
+                            <li><strong>Hardware:</strong> Fyzické stroje, servery, mobily.</li>
+                            <li><strong>Software:</strong> Kód a programy, které řídí logiku.</li>
+                            <li><strong>Data:</strong> Samotný obsah (databáze).</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <ul>
+                            <li><strong>Procesy:</strong> Pracovní postupy a pravidla.</li>
+                            <li><strong>Lidé:</strong> Uživatelé systému a jejich role.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 9: PILÍŘE WORDPRESS OTÁZKY -->
+        <div class="slide">
+            <span class="badge activity">Opakování / Diskuze</span>
+            <h1>Cvičení: Pilíře ve WordPressu</h1>
+            <p>Minule jsme pracovali s WordPressem. Dokážete odvodit jeho 5 pilířů?</p>
+            <div class="activity-box">
+                <h2 style="color: white;">Otázky:</h2>
+                <ol style="color: white;">
+                    <li>Co je <strong>Hardware</strong> v případě našeho webu?</li>
+                    <li>Co je to <strong>Software</strong> v tomto případě?</li>
+                    <li>Co tvoří <strong>Data</strong> a kde jsou uložena?</li>
+                    <li>Jaké <strong>Procesy</strong> na blogu probíhají?</li>
+                    <li>Jaké <strong>Role</strong> mají lidé (uživatelé)?</li>
+                </ol>
+            </div>
+        </div>
+
+        <!-- SLIDE 10: PILÍŘE WORDPRESS ŘEŠENÍ -->
+        <div class="slide">
+            <span class="badge recap">Řešení</span>
+            <h1>Pilíře ve WordPressu</h1>
+            <div class="recap-box">
+                <ol style="font-size: 1.4rem;">
+                    <li style="margin-bottom: 10px;"><strong>Hardware:</strong> Webhosting / Server.</li>
+                    <li style="margin-bottom: 10px;"><strong>Software:</strong> Jádro WordPressu (PHP), Pluginy, Šablona.</li>
+                    <li style="margin-bottom: 10px;"><strong>Data:</strong> Databáze (MySQL) - texty, nastavení.</li>
+                    <li style="margin-bottom: 10px;"><strong>Procesy:</strong> Koncept &rarr; Revize &rarr; Publikování.</li>
+                    <li style="margin-bottom: 10px;"><strong>Lidé:</strong> Administrátor, Redaktor, Návštěvník.</li>
+                </ol>
+            </div>
+        </div>
+
+        <!-- SLIDE 11: ZÁVĚREČNÁ AKTIVITA 1 -->
+        <div class="slide">
+            <span class="badge activity">Cvičení 1</span>
+            <h1>Rozeberte svůj systém</h1>
+            <div class="activity-box">
+                <h2 style="color: white;">Úkol:</h2>
+                <p style="color: white;">Popište, co tvoří <strong>5 pilířů (HW, SW, Data, Procesy – rozepište co nejdetailněji, Lidé)</strong> ve vámi zvolené instituci.</p>
+                <div class="topics-grid">
+                    <div class="topic-item">1. Nemocnice</div>
+                    <div class="topic-item">2. Letiště</div>
+                    <div class="topic-item">3. E-shop (Alza)</div>
+                    <div class="topic-item">4. Policie ČR</div>
+                    <div class="topic-item">5. Knihovna</div>
+                    <div class="topic-item">6. Banka</div>
+                    <div class="topic-item">7. Logistika (PPL)</div>
+                    <div class="topic-item">8. Krevní centrum</div>
+                    <div class="topic-item">9. Kino (Rezervace)</div>
+                    <div class="topic-item">10. Školní jídelna</div>
+                    <div class="topic-item">11. Hotelová recepce</div>
+                    <div class="topic-item">12. Půjčovna aut</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ======================= LEKCE 2 ======================= -->
+        
+        <!-- SLIDE 12: ROLE A OPRÁVNĚNÍ -->
+        <div class="slide">
+            <span class="badge theory">Lekce 2: Teorie</span>
+            <h1>Oprávnění a role uživatelů</h1>
+            <div class="content-box">
+                <h2>Proč nemohou všichni všechno?</h2>
+                <p>Už víme, že <strong>Lidé</strong> jsou jedním z 5 pilířů IS. V reálném systému ale uživatelé nemají stejná práva. Kdyby mohl každý mazat záznamy, systém by brzy zkolaboval.</p>
+                <ul>
+                    <li style="margin-bottom: 10px;"><strong>Administrátor:</strong> Má absolutní kontrolu. Spravuje systém, tvoří nové uživatele, řeší výpadky.</li>
+                    <li style="margin-bottom: 10px;"><strong>Editor (např. Učitel):</strong> Tvoří a upravuje obsah v rámci své kompetence. Může přidat známku, ale nemůže smazat předmět.</li>
+                    <li style="margin-bottom: 10px;"><strong>Uživatel (např. Žák):</strong> Primárně čte data. Zápis může provádět jen do vybraných polí (např. odevzdání úkolu).</li>
+                    <li style="margin-bottom: 10px;"><strong>Host / Veřejnost:</strong> Vidí jen veřejně dostupná data. Nemusí se přihlašovat.</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- SLIDE 13: MATICE OPRÁVNĚNÍ UKÁZKA -->
+        <div class="slide">
+            <span class="badge theory">Teorie</span>
+            <h1>Matice oprávnění</h1>
+            <p>Aby vývojáři věděli, komu povolit jaké tlačítko, tvoří se tzv. <strong>Matice oprávnění</strong> (Access Control Matrix).</p>
+            
+            <h2>Ukázka: IS Knihovny</h2>
+            <table>
+                <tr>
+                    <th>Role \ Akce</th>
+                    <th>Vyhledat knihu</th>
+                    <th>Půjčit knihu</th>
+                    <th>Koupit nové knihy</th>
+                    <th>Smazat uživatele</th>
+                </tr>
+                <tr>
+                    <td><strong>Návštěvník</strong> (nepřihlášen)</td>
+                    <td>✔ (Čtení)</td>
+                    <td>❌</td>
+                    <td>❌</td>
+                    <td>❌</td>
+                </tr>
+                <tr>
+                    <td><strong>Čtenář</strong> (přihlášen)</td>
+                    <td>✔ (Čtení)</td>
+                    <td>✔ (Zápis)</td>
+                    <td>❌</td>
+                    <td>❌</td>
+                </tr>
+                <tr>
+                    <td><strong>Knihovník</strong></td>
+                    <td>✔</td>
+                    <td>✔</td>
+                    <td>✔ (Zápis)</td>
+                    <td>❌</td>
+                </tr>
+                <tr>
+                    <td><strong>Administrátor</strong></td>
+                    <td>✔</td>
+                    <td>✔</td>
+                    <td>✔</td>
+                    <td>✔ (Mazání)</td>
+                </tr>
+            </table>
+        </div>
+
+        <!-- SLIDE 14: AKTIVITA MATICE OPRÁVNĚNÍ (KOMPLEXNÍ STORY) -->
+        <div class="slide">
+            <span class="badge activity">Lekce 2: Aktivita</span>
+            <h1>Mise: Nemocnice v ohrožení</h1>
+            
+            <div class="story-box">
+                <p style="color: white; margin: 0;">⚠️ <strong>Incident:</strong> V místní nemocnici nastal skandál. Brigádník na recepci omylem smazal z databáze záznamy o lécích pro 50 pacientů. Jak se ukázalo, měl v systému práva administrátora. Byli jste najati jako externí bezpečnostní auditoři, abyste systém dali okamžitě do pořádku.</p>
+            </div>
+
+            <div class="activity-box" style="margin-top: 0;">
+                <h2 style="color: white;">Úkol: Navrhněte neprůstřelnou matici oprávnění</h2>
+                <ol style="color: white; font-size: 1.2rem;">
+                    <li style="margin-bottom: 10px;">Do řádků v Excelu vypište tyto role: <strong>Doktor, Zdravotní sestra, Recepční, Pacient, IT Administrátor</strong>.</li>
+                    <li style="margin-bottom: 10px;">Do sloupců vypište tabulky databáze: <strong>Karta pacienta, Historie diagnóz, Předepsané léky, Vyúčtování pojišťovně</strong>.</li>
+                    <li style="margin-bottom: 10px;">Místo pouhého křížku použijte písmena <strong>C, R, U, D</strong> (Create, Read, Update, Delete). <em>Příklad: Může Recepční číst (R) kartu? Ano. Může ji smazat (D)? Ne!</em></li>
+                </ol>
+                <p style="color: white; font-weight: bold; margin-top: 15px;">Diskuze (chyták): Může Doktor smazat (Delete) starou diagnózu, pokud se spletl? Jak by to mělo být správně z právního hlediska?</p>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+        const progressBar = document.getElementById('progress-bar');
+        const slideCounter = document.getElementById('slide-counter');
+        
+        const btnPrev = document.getElementById('btn-prev');
+        const btnNext = document.getElementById('btn-next');
+
+        function updateSlide() {
+            slides.forEach((slide, index) => {
+                if (index === currentSlide) {
+                    slide.classList.add('active');
+                } else {
+                    slide.classList.remove('active');
+                }
+            });
+            
+            if (slides.length > 1 && progressBar) {
+                const progress = ((currentSlide) / (slides.length - 1)) * 100;
+                progressBar.style.width = progress + '%';
+            }
+            if (slideCounter) {
+                slideCounter.innerText = `${currentSlide + 1} / ${slides.length}`;
+            }
+        }
+
+        function nextSlide() {
+            if (currentSlide < slides.length - 1) {
+                currentSlide++;
+                updateSlide();
+            }
+        }
+
+        function prevSlide() {
+            if (currentSlide > 0) {
+                currentSlide--;
+                updateSlide();
+            }
+        }
+
+        if (btnPrev) {
+            btnPrev.addEventListener('click', prevSlide);
+        }
+        if (btnNext) {
+            btnNext.addEventListener('click', nextSlide);
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
+                nextSlide();
+            } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+                prevSlide();
+            }
+        });
+
+        let touchstartX = 0;
+        let touchendX = 0;
+
+        function handleSwipe() {
+            const minSwipeDistance = 50; 
+            if (touchendX < touchstartX - minSwipeDistance) {
+                nextSlide(); 
+            }
+            if (touchendX > touchstartX + minSwipeDistance) {
+                prevSlide(); 
+            }
+        }
+
+        document.addEventListener('touchstart', e => {
+            touchstartX = e.changedTouches[0].screenX;
+        }, { passive: true });
+
+        document.addEventListener('touchend', e => {
+            touchendX = e.changedTouches[0].screenX;
+            handleSwipe();
+        }, { passive: true });
+
+        updateSlide();
+    </script>
+</body>
+</html>
