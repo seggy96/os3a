@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Informační systémy - Výukový materiál</title>
+    <title>Informační systémy - Lekce 1 až 3</title>
     <style>
         :root {
             --primary: #2c3e50;
@@ -15,6 +15,7 @@
             --activity-bg: #f39c12;
             --theory-bg: #3498db;
             --recap-bg: #9b59b6;
+            --story-bg: #c0392b;
         }
 
         html, body {
@@ -160,6 +161,7 @@
         .badge.activity { background-color: var(--activity-bg); color: var(--text-dark); }
         .badge.intro { background-color: #27ae60; color: white; }
         .badge.recap { background-color: var(--recap-bg); color: white; }
+        .badge.story { background-color: var(--story-bg); color: white; }
 
         .content-box, .recap-box, .activity-box {
             padding: 30px;
@@ -180,6 +182,15 @@
         .activity-box {
             background: rgba(243, 156, 18, 0.1);
             border-left: 5px solid var(--activity-bg);
+        }
+
+        .story-box {
+            background: rgba(192, 57, 43, 0.15);
+            border-left: 5px solid var(--story-bg);
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            font-style: italic;
         }
 
         .grid-2 {
@@ -222,6 +233,25 @@
             align-self: center;
         }
 
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        th, td {
+            padding: 15px;
+            text-align: center;
+            border: 1px solid rgba(255,255,255,0.2);
+            font-size: 1.2rem;
+        }
+        th {
+            background: rgba(0,0,0,0.3);
+            color: var(--accent);
+        }
+
         @media (max-width: 768px) {
             h1 { font-size: 2.2rem; }
             h2 { font-size: 1.6rem; }
@@ -235,7 +265,7 @@
             .topics-grid { grid-template-columns: repeat(2, 1fr); }
 
             .slide { padding: 30px 5%; padding-bottom: 90px; }
-            .content-box, .activity-box, .recap-box { padding: 20px; }
+            .content-box, .activity-box, .recap-box, .story-box { padding: 20px; }
 
             #controls {
                 bottom: 15px;
@@ -252,6 +282,8 @@
                 flex: 1;
                 margin: 0 5px;
             }
+            
+            table { display: block; overflow-x: auto; }
         }
     </style>
 </head>
@@ -261,21 +293,23 @@
     <div id="slide-counter">1 / X</div>
 
     <div id="controls">
-        <button id="btn-prev">&#8592; Zpět</button>
-        <button id="btn-next">Další &#8594;</button>
+        <button id="btn-prev" aria-label="Předchozí snímek">&#8592; Zpět</button>
+        <button id="btn-next" aria-label="Další snímek">Další &#8594;</button>
     </div>
 
     <div id="presentation">
 
-        <!-- ================= ÚVOD ================= -->
+        <!-- SLIDE 1: ÚVOD -->
         <div class="slide active title-slide">
-            <span class="badge intro">Kompletní kurz pro SŠ</span>
+            <span class="badge intro">Lekce 1 až 3</span>
             <h1>Informační systémy</h1>
-            <h2>Od teorie k návrhu a testování</h2>
+            <h2>Od teorie po audit systémů</h2>
             <p>Použijte šipky, tlačítka nebo swipujte do stran.</p>
         </div>
 
-        <!-- ================= TEORIE: SYSTÉMY OBECNĚ ================= -->
+        <!-- ======================= LEKCE 1 ======================= -->
+        
+        <!-- SLIDE 2: SYSTÉMY OBECNĚ -->
         <div class="slide">
             <span class="badge theory">Teorie</span>
             <h1>Co je to "Systém"?</h1>
@@ -299,6 +333,7 @@
             </div>
         </div>
 
+        <!-- SLIDE 3: TYPY SYSTÉMŮ OTÁZKA -->
         <div class="slide">
             <span class="badge theory">Teorie / Otázka</span>
             <h1>Typy systémů</h1>
@@ -327,6 +362,7 @@
             </div>
         </div>
 
+        <!-- SLIDE 4: TYPY SYSTÉMŮ ŘEŠENÍ -->
         <div class="slide">
             <span class="badge recap">Řešení</span>
             <h1>Typy systémů - Příklady</h1>
@@ -336,7 +372,7 @@
                         <h2 style="margin-top: 0;">Uzavřený × Otevřený</h2>
                         <ul>
                             <li style="margin-bottom: 15px;"><strong>Otevřený:</strong> Neustále komunikuje s okolím, potřebuje vstupy. <br><span style="font-size: 1.1rem; color: #bdc3c7;"><em>Příklady:</em> Město, škola, živý organismus, e-shop.</span></li>
-                            <li><strong>Uzavřený:</strong> S okolím nekomunikuje, vystačí si sám (v IT spíše teoretický koncept, ve fyzice reálný). <br><span style="font-size: 1.1rem; color: #bdc3c7;"><em>Příklady:</em> Dokonale uzavřená termoska, zapečetěné terárium, mechanické hodinky.</span></li>
+                            <li><strong>Uzavřený:</strong> S okolím nekomunikuje, vystačí si sám. <br><span style="font-size: 1.1rem; color: #bdc3c7;"><em>Příklady:</em> Dokonale uzavřená termoska, zapečetěné terárium.</span></li>
                         </ul>
                     </div>
                     <div>
@@ -350,7 +386,7 @@
             </div>
         </div>
 
-        <!-- ================= INFORMAČNÍ SYSTÉMY ================= -->
+        <!-- SLIDE 5: INFORMAČNÍ SYSTÉMY -->
         <div class="slide">
             <span class="badge theory">Teorie</span>
             <h1>Informační systém (IS)</h1>
@@ -364,7 +400,7 @@
             </div>
         </div>
 
-        <!-- ================= HÁDANKA: IS BEZ POČÍTAČŮ ================= -->
+        <!-- SLIDE 6: HÁDANKA IS BEZ POČÍTAČŮ -->
         <div class="slide">
             <span class="badge activity">Otázka do pléna</span>
             <h1>Informační systém bez počítačů?</h1>
@@ -375,6 +411,7 @@
             </div>
         </div>
 
+        <!-- SLIDE 7: HÁDANKA ŘEŠENÍ -->
         <div class="slide">
             <span class="badge recap">Řešení</span>
             <h1>IS před érou počítačů</h1>
@@ -398,7 +435,7 @@
             </div>
         </div>
 
-        <!-- ================= PILÍŘE IS ================= -->
+        <!-- SLIDE 8: PILÍŘE IS -->
         <div class="slide">
             <span class="badge theory">Struktura</span>
             <h1>Z čeho se skládá každý IS?</h1>
@@ -422,6 +459,7 @@
             </div>
         </div>
 
+        <!-- SLIDE 9: PILÍŘE WORDPRESS OTÁZKY -->
         <div class="slide">
             <span class="badge activity">Opakování / Diskuze</span>
             <h1>Cvičení: Pilíře ve WordPressu</h1>
@@ -438,6 +476,7 @@
             </div>
         </div>
 
+        <!-- SLIDE 10: PILÍŘE WORDPRESS ŘEŠENÍ -->
         <div class="slide">
             <span class="badge recap">Řešení</span>
             <h1>Pilíře ve WordPressu</h1>
@@ -452,9 +491,9 @@
             </div>
         </div>
 
-        <!-- ================= LEKCE 1: AKTIVITA ================= -->
+        <!-- SLIDE 11: ZÁVĚREČNÁ AKTIVITA 1 -->
         <div class="slide">
-            <span class="badge activity">Cvičení</span>
+            <span class="badge activity">Cvičení 1</span>
             <h1>Rozeberte svůj systém</h1>
             <div class="activity-box">
                 <h2 style="color: white;">Úkol:</h2>
@@ -476,235 +515,119 @@
             </div>
         </div>
 
-        <!-- ================= LEKCE 2 ================= -->
+        <!-- ======================= LEKCE 2 ======================= -->
+        
+        <!-- SLIDE 12: ROLE A OPRÁVNĚNÍ -->
         <div class="slide">
             <span class="badge theory">Lekce 2: Teorie</span>
             <h1>Oprávnění a role uživatelů</h1>
             <div class="content-box">
                 <h2>Proč nemohou všichni všechno?</h2>
-                <p>Uživatelé nemají stejná práva, jinak by hrozil chaos nebo únik dat.</p>
+                <p>Už víme, že <strong>Lidé</strong> jsou jedním z 5 pilířů IS. V reálném systému ale uživatelé nemají stejná práva. Kdyby mohl každý mazat záznamy, systém by brzy zkolaboval.</p>
                 <ul>
-                    <li><strong>Administrátor:</strong> Má absolutní kontrolu.</li>
-                    <li><strong>Editor / Učitel:</strong> Tvoří a upravuje obsah v rámci své kompetence.</li>
-                    <li><strong>Běžný uživatel / Žák:</strong> Pouze čte data, upravuje vlastní profil.</li>
-                    <li><strong>Host / Veřejnost:</strong> Vidí jen veřejně dostupná data.</li>
+                    <li style="margin-bottom: 10px;"><strong>Administrátor:</strong> Má absolutní kontrolu. Spravuje systém, tvoří nové uživatele, řeší výpadky.</li>
+                    <li style="margin-bottom: 10px;"><strong>Editor (např. Učitel):</strong> Tvoří a upravuje obsah v rámci své kompetence. Může přidat známku, ale nemůže smazat předmět.</li>
+                    <li style="margin-bottom: 10px;"><strong>Uživatel (např. Žák):</strong> Primárně čte data. Zápis může provádět jen do vybraných polí (např. odevzdání úkolu).</li>
+                    <li style="margin-bottom: 10px;"><strong>Host / Veřejnost:</strong> Vidí jen veřejně dostupná data. Nemusí se přihlašovat.</li>
                 </ul>
             </div>
         </div>
 
+        <!-- SLIDE 13: MATICE OPRÁVNĚNÍ UKÁZKA -->
         <div class="slide">
-            <span class="badge activity">Lekce 2: Aktivita</span>
-            <h1>Cvičení: Matice oprávnění</h1>
-            <div class="activity-box">
-                <h2>Cíl: Přiřadit role v reálném systému</h2>
-                <p><strong>Zadání:</strong> IS naší školní jídelny a bufetu.</p>
-                <ol>
-                    <li>Otevřete Excel a vytvořte Matici oprávnění.</li>
-                    <li>Řádky (role): <em>Žák, Učitel, Kuchařka, Vedoucí.</em></li>
-                    <li>Sloupce (akce): <em>Objednat oběd, Zrušit oběd, Změnit menu, Export tržeb.</em></li>
-                    <li>Vyplňte křížky (příp. Čtení / Zápis / Smazání).</li>
-                </ol>
-            </div>
+            <span class="badge theory">Teorie</span>
+            <h1>Matice oprávnění</h1>
+            <p>Aby vývojáři věděli, komu povolit jaké tlačítko, tvoří se tzv. <strong>Matice oprávnění</strong> (Access Control Matrix).</p>
+            
+            <h2>Ukázka: IS Knihovny</h2>
+            <table>
+                <tr>
+                    <th>Role \ Akce</th>
+                    <th>Vyhledat knihu</th>
+                    <th>Půjčit knihu</th>
+                    <th>Koupit nové knihy</th>
+                    <th>Smazat uživatele</th>
+                </tr>
+                <tr>
+                    <td><strong>Návštěvník</strong> (nepřihlášen)</td>
+                    <td>✔ (Čtení)</td>
+                    <td>❌</td>
+                    <td>❌</td>
+                    <td>❌</td>
+                </tr>
+                <tr>
+                    <td><strong>Čtenář</strong> (přihlášen)</td>
+                    <td>✔ (Čtení)</td>
+                    <td>✔ (Zápis)</td>
+                    <td>❌</td>
+                    <td>❌</td>
+                </tr>
+                <tr>
+                    <td><strong>Knihovník</strong></td>
+                    <td>✔</td>
+                    <td>✔</td>
+                    <td>✔ (Zápis)</td>
+                    <td>❌</td>
+                </tr>
+                <tr>
+                    <td><strong>Administrátor</strong></td>
+                    <td>✔</td>
+                    <td>✔</td>
+                    <td>✔</td>
+                    <td>✔ (Mazání)</td>
+                </tr>
+            </table>
         </div>
 
-        <!-- ================= LEKCE 3 ================= -->
+        <!-- ======================= LEKCE 3 ======================= -->
+        
+        <!-- SLIDE 14: ANALÝZA IS -->
         <div class="slide">
             <span class="badge theory">Lekce 3: Teorie</span>
-            <h1>Analýza veřejných IS</h1>
-            <div class="grid-2">
-                <div>
-                    <h2>Kritéria hodnocení:</h2>
-                    <ul>
-                        <li><strong>Struktura (UI/UX):</strong> Najdu rychle, co potřebuji?</li>
-                        <li><strong>Provázanost:</strong> Musím data zadávat dvakrát?</li>
-                        <li><strong>Zabezpečení:</strong> Je vyžadováno dvoufázové ověření?</li>
-                    </ul>
-                </div>
-                <div>
-                    <div class="content-box">
-                        <p><strong>Příklady:</strong> Portál občana, IS Krevního centra, IS Dopravního podniku.</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="slide">
-            <span class="badge activity">Lekce 3: Aktivita</span>
-            <h1>Cvičení: UX/UI Audit školního systému</h1>
-            <div class="activity-box">
-                <h2>Cíl: Analyzovat IS z pohledu uživatelů</h2>
-                <p><strong>Zadání:</strong> Otevřete si školní informační systém (Bakaláři/Edupage).</p>
-                <ol>
-                    <li><strong>Úkol 1 (Audit):</strong> Najděte 3 věci, které jsou navrženy nepřehledně. Vytvořte rychlý "wireframe" (náčrt), jak by to šlo vyřešit lépe.</li>
-                    <li><strong>Úkol 2 (Datový tok):</strong> Jakou cestou musí projít data, když učitel zapíše známku, až ji uvidí rodič na mobilu?</li>
-                </ol>
-            </div>
-        </div>
-
-        <!-- ================= LEKCE 4 ================= -->
-        <div class="slide">
-            <span class="badge theory">Lekce 4: Teorie</span>
-            <h1>Databáze: Srdce systému</h1>
-            <div class="content-box">
-                <h2>Základní pojmy relačních databází</h2>
-                <ul>
-                    <li><strong>Tabulka (Entita):</strong> Zastupuje objekt (např. "ŽÁCI").</li>
-                    <li><strong>Záznam (Řádek):</strong> Jeden konkrétní žák.</li>
-                    <li><strong>Atribut (Sloupec):</strong> Vlastnost žáka (Jméno, Datum nar.).</li>
-                    <li><strong>Primární klíč (PK):</strong> Unikátní ID (Rodné číslo).</li>
-                    <li><strong>Cizí klíč (FK):</strong> Propojení tabulek (ID_Tridy ukazuje do tabulky TŘÍDY).</li>
-                </ul>
-            </div>
-        </div>
-
-        <div class="slide">
-            <span class="badge activity">Lekce 4: Aktivita na PC</span>
-            <h1>Cvičení: Návrh databáze v praxi</h1>
-            <div class="activity-box">
-                <h2>Cíl: Pochopit strukturu dat a normalizaci</h2>
-                <p><strong>Zadání:</strong> Jděte na web <code>draw.io</code> (nebo podobný nástroj).</p>
-                <ol>
-                    <li>Navrhněte strukturu databáze pro <strong>Spotify</strong>.</li>
-                    <li>Vytvořte minimálně 3 tabulky: <code>UZIVATELE</code>, <code>PISNICKY</code>, <code>PLAYLISTY</code>.</li>
-                    <li>Vypište do nich klíčové atributy.</li>
-                    <li>Zkuste tabulky logicky propojit čarami.</li>
-                </ol>
-            </div>
-        </div>
-
-        <!-- ================= LEKCE 5 ================= -->
-        <div class="slide">
-            <span class="badge theory">Lekce 5: Teorie</span>
-            <h1>Databázové dotazy (SQL)</h1>
+            <h1>Analýza a hodnocení IS</h1>
+            <p>Jak poznáme "dobrý" informační systém od špatného? Nejde jen o to, že program "nepadá". Díváme se na tyto hlavní faktory:</p>
             <div class="grid-2">
                 <div class="content-box">
-                    <h2>Základní operace (CRUD)</h2>
+                    <h2>1. Použitelnost (UI / UX)</h2>
                     <ul>
-                        <li><strong>C</strong>reate (INSERT)</li>
-                        <li><strong>R</strong>ead (SELECT)</li>
-                        <li><strong>U</strong>pdate (UPDATE)</li>
-                        <li><strong>D</strong>elete (DELETE)</li>
+                        <li><strong>UI (Vzhled):</strong> Jsou texty čitelné? Mají tlačítka logické barvy a umístění?</li>
+                        <li><strong>UX (Zážitek):</strong> Je ovládání intuitivní? Nebo musím cíl hledat na 10 kliknutí? <em>(Např. skrytá tlačítka, matoucí formuláře).</em></li>
                     </ul>
                 </div>
-                <div>
-                    <h2>Syntaxe SQL (Filtrování)</h2>
-                    <p>Systému musíme říct přesné podmínky:</p>
-                    <code>SELECT Jmeno, Prijmeni<br>FROM Zaci<br>WHERE Vek >= 18 AND Trida = '3.A';</code>
-                </div>
-            </div>
-        </div>
-
-        <div class="slide">
-            <span class="badge activity">Lekce 5: Aktivita na PC</span>
-            <h1>Cvičení: SQL v prohlížeči</h1>
-            <div class="activity-box">
-                <h2>Cíl: Napsat vlastní databázový dotaz</h2>
-                <p><strong>Zadání:</strong> Otevřete si interaktivní výukový portál (např. <code>sqlbolt.com</code>).</p>
-                <ol>
-                    <li>Projděte si Lekci 1 a 2 (Základní SELECT a WHERE).</li>
-                    <li><strong>Výzva:</strong> Zkuste vyfiltrovat správná data úpravou kódu.</li>
-                    <li>Sledujte, jak se mění výstupní tabulka.</li>
-                </ol>
-            </div>
-        </div>
-
-        <!-- ================= LEKCE 6 ================= -->
-        <div class="slide">
-            <span class="badge theory">Lekce 6: Teorie</span>
-            <h1>Specifikace a návrh IS</h1>
-            <div class="content-box">
-                <h2>Fáze vývoje softwaru</h2>
-                <ol>
-                    <li><strong>Analýza:</strong> Co má systém řešit?</li>
-                    <li><strong>Specifikace požadavků:</strong> Co systém "musí" a "nesmí" umět.</li>
-                    <li><strong>Návrh (Design):</strong> Kreslení procesů (UML) a architektury.</li>
-                    <li><strong>Implementace:</strong> Samotné programování.</li>
-                </ol>
-            </div>
-        </div>
-
-        <div class="slide">
-            <span class="badge activity">Lekce 6: Aktivita na PC</span>
-            <h1>Cvičení: Architekti systému</h1>
-            <div class="activity-box">
-                <h2>Cíl: Navrhnout procesní logiku (Algoritmus)</h2>
-                <p><strong>Zadání:</strong> Škola zavádí systém pro půjčování IT vybavení.</p>
-                <ol>
-                    <li>Otevřete si <code>draw.io</code> nebo <code>miro.com</code>.</li>
-                    <li>Nakreslete <strong>vývojový diagram</strong>: <em>"Žák žádá o zapůjčení notebooku."</em></li>
-                    <li>Nezapomeňte na podmínky (kosočtverce): <em>Je skladem? Má žák ban?</em></li>
-                </ol>
-            </div>
-        </div>
-
-        <!-- ================= LEKCE 7 ================= -->
-        <div class="slide">
-            <span class="badge theory">Lekce 7: Teorie</span>
-            <h1>Bezpečnost a integrita dat</h1>
-            <div class="grid-2">
-                <div>
-                    <h2>Zálohování vs. Archivace</h2>
+                <div class="content-box">
+                    <h2>2. Funkcionalita a procesy</h2>
                     <ul>
-                        <li><strong>Záloha (Backup):</strong> Pro případ havárie (rychlá obnova).</li>
-                        <li><strong>Archivace:</strong> Dlouhodobé odložení starých dat.</li>
-                    </ul>
-                </div>
-                <div>
-                    <h2>Integrita a hrozby</h2>
-                    <ul>
-                        <li><strong>Integrita:</strong> Zajištění logické správnosti dat.</li>
-                        <li><strong>Rizika:</strong> Ransomware, SQL Injection, Phishing.</li>
+                        <li>Dělá systém to, co má? Nechybí mu nějaká klíčová funkce?</li>
+                        <li>Nejsou procesy zbytečně složité? Musí uživatel stejná data (např. adresu) zadávat do systému vícekrát dokola?</li>
                     </ul>
                 </div>
             </div>
         </div>
 
+        <!-- SLIDE 16: AKTIVITA AUDIT -->
         <div class="slide">
-            <span class="badge activity">Lekce 7: Aktivita</span>
-            <h1>Cvičení: Krizový štáb</h1>
-            <div class="activity-box">
-                <h2>Cíl: Reagovat na kybernetický útok</h2>
-                <p><strong>Scénář:</strong> Jste IT oddělení nemocnice. Na serveru svítí Ransomware.</p>
-                <ol>
-                    <li>Vypracujte ve skupinách <strong>"Plán obnovy (Disaster Recovery)"</strong>.</li>
-                    <li>Jakou strategii zvolíte? Zaplatíte výkupné?</li>
-                    <li>Kde vezmeme zálohu a co budeme dělat se ztracenými daty?</li>
-                </ol>
+            <span class="badge activity">Lekce 3: Aktivita</span>
+            <h1>Mise: Nemilosrdný IT Auditor</h1>
+            
+            <div class="story-box">
+                <p style="color: white; margin: 0;">🕵️‍♂️ <strong>Vaše role:</strong> Jste seniorní IT konzultanti. Firmy a instituce vám platí těžké peníze za to, že jim řeknete, proč jejich systémy lidé nenávidí a proč v nich dělají chyby. Dnes máte volnou ruku, abyste si vybrali libovolnou "oběť".</p>
             </div>
-        </div>
 
-        <!-- ================= LEKCE 8 ================= -->
-        <div class="slide">
-            <span class="badge theory">Lekce 8: Teorie</span>
-            <h1>Testování a nasazení</h1>
-            <div class="content-box">
-                <h2>Jak testovat software?</h2>
-                <ul>
-                    <li><strong>Happy path:</strong> Uživateli vše funguje.</li>
-                    <li><strong>Edge cases (Krajní případy):</strong> Do data vložím text, uživatel klikne 10x na tlačítko.</li>
-                    <li><strong>Nasazení:</strong> Paralelní běh (oba systémy naráz) vs. Velký třesk (přepnutí přes noc).</li>
-                </ul>
-            </div>
-        </div>
-
-        <div class="slide">
-            <span class="badge activity">Lekce 8: Aktivita</span>
-            <h1>Cvičení: QA Inženýři</h1>
-            <div class="activity-box">
-                <h2>Cíl: Najít logické chyby v návrhu</h2>
-                <p><strong>Zadání:</strong> Vyměňte si vývojové diagramy Půjčovny z Lekce 6.</p>
-                <ol>
-                    <li>Snažte se chovat jako nejhorší uživatel a najít díru v logice.</li>
-                    <li>Co se stane, když žák vrátí notebook bez nabíječky?</li>
-                    <li>Sepište <strong>Chybový protokol (Bug Report)</strong> a vraťte autorům k opravě.</li>
+            <div class="activity-box" style="margin-top: 0;">
+                <h2 style="color: white;">Úkol: Najděte a opravte 3 fatální nedostatky</h2>
+                <ol style="color: white; font-size: 1.2rem;">
+                    <li style="margin-bottom: 10px;"><strong>Vyberte si oběť:</strong> Otevřete libovolný IS (Bakaláři/Edupage, váš oblíbený e-shop, Netflix, ČD, Idos...).</li>
+                    <li style="margin-bottom: 10px;"><strong>Lov chyb:</strong> Najděte minimálně <strong>3 konkrétní nedostatky</strong>. Může jít o nelogické UI, chybějící funkci nebo otravný zbytečný proces (např. zbytečné kroky v košíku).</li>
+                    <li style="margin-bottom: 10px;"><strong>Návrh řešení:</strong> Ke každé chybě navrhněte, jak ji opravit. Nakreslete na papír nový vzhled (wireframe) nebo popište logiku nového procesu.</li>
                 </ol>
+                <p style="color: white; font-weight: bold; margin-top: 15px;">Výstup: Buďte připraveni svá zjištění a návrhy odprezentovat týmu. Buďte kritičtí, ale konstruktivní!</p>
             </div>
         </div>
 
         <!-- Konec -->
         <div class="slide title-slide">
-            <h1>Konec kurzu</h1>
-            <h2>Informační systém není jen program.<br>Je to ekosystém.</h2>
+            <h1>Konec 3. lekce</h1>
+            <h2>Informační systém musí sloužit lidem,<br>ne lidé systému.</h2>
         </div>
 
     </div>
@@ -719,7 +642,6 @@
             const btnPrev = document.getElementById('btn-prev');
             const btnNext = document.getElementById('btn-next');
 
-            // Zabezpečení proti tomu, že šipky nefungují před kliknutím
             window.focus();
 
             function updateSlide() {
@@ -731,9 +653,13 @@
                     }
                 });
                 
-                const progress = ((currentSlide) / (slides.length - 1)) * 100;
-                progressBar.style.width = progress + '%';
-                slideCounter.innerText = `${currentSlide + 1} / ${slides.length}`;
+                if (slides.length > 1 && progressBar) {
+                    const progress = ((currentSlide) / (slides.length - 1)) * 100;
+                    progressBar.style.width = progress + '%';
+                }
+                if (slideCounter) {
+                    slideCounter.innerText = `${currentSlide + 1} / ${slides.length}`;
+                }
             }
 
             function nextSlide() {
@@ -750,8 +676,12 @@
                 }
             }
 
-            btnPrev.addEventListener('click', prevSlide);
-            btnNext.addEventListener('click', nextSlide);
+            if (btnPrev) {
+                btnPrev.addEventListener('click', prevSlide);
+            }
+            if (btnNext) {
+                btnNext.addEventListener('click', nextSlide);
+            }
 
             document.addEventListener('keydown', (e) => {
                 if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
